@@ -12,6 +12,7 @@
   import SixImageDoraemon from "./lib/SixImageDoraemon.svelte";
   import SixImageTayo from "./lib/SixImageTayo.svelte";
   import FourImageFruit from "./lib/FourImageFruit.svelte";
+  import SixImageFruit from "./lib/SixImageFruit.svelte";
 
   export let url = "";
 </script>
@@ -49,6 +50,9 @@
       </Route>
       <Route path="/six-image-tayo">
         <SixImageTayo />
+      </Route>
+      <Route path="/six-image-fruit">
+        <SixImageFruit />
       </Route>
 
       <Route path="*">

@@ -60,7 +60,7 @@
     if (card.id === targetCard.id) {
       message = `Hebat! Benar sekali, gambar itu ada di nomor ${card.number}.`;
     } else {
-      message = `Sayang sekali, itu nomor ${card.number}. Gambar yang benar ada di nomor ${targetCard.number}.`;
+      message = `Gambar yang benar ada di nomor ${targetCard.number}.`;
     }
     gameState = "result";
   }

@@ -1,5 +1,6 @@
 <script>
   import { Link } from "svelte-routing";
+
   let gameState = $state("start");
   let countdown = $state(0);
   let message = $state("");
@@ -8,10 +9,12 @@
   let selectedTime = $state(10);
 
   const images = [
-    "/images/tayo/t1.png",
-    "/images/tayo/t2.png",
-    "/images/tayo/t3.png",
-    "/images/tayo/t4.png",
+    "/images/fruits/buah1.png",
+    "/images/fruits/buah2.png",
+    "/images/fruits/buah3.png",
+    "/images/fruits/buah4.png",
+    "/images/fruits/buah5.png",
+    "/images/fruits/buah6.png",
   ];
 
   function startGame() {
@@ -47,9 +50,9 @@
     if (gameState !== "guessing") return;
 
     if (card.id === targetCard.id) {
-      message = `Hebat! Benar sekali, gambar itu ada di nomor ${card.number}.`;
+      message = `Benar sekali, gambar itu ada di nomor ${card.number}.`;
     } else {
-      message = `Gambar yang benar ada di nomor ${targetCard.number}.`;
+      message = `Salah! Gambar yang benar ada di nomor ${targetCard.number}.`;
     }
     gameState = "result";
   }
@@ -76,7 +79,7 @@
       >
     </Link>
     <h1 class="text-2xl font-extrabold text-slate-800 tracking-tight">
-      Game Memori 4 Gambar
+      Game Memori 6 Gambar
     </h1>
     <div></div>
   </div>
@@ -151,15 +154,15 @@
   </div>
 
   {#if gameState !== "start"}
-    <div class="grid grid-cols-2 gap-4 justify-items-center mt-4">
+    <div class="grid grid-cols-3 gap-4 justify-items-center mt-4">
       {#each cards as card}
         <button
-          class="w-40 h-40 [perspective:1000px]"
+          class="w-40 h-40 perspective[1000px]"
           onclick={() => guess(card)}
           disabled={gameState !== "guessing"}
         >
           <div
-            class={`relative w-full h-full transition-transform duration-500 [transform-style:preserve-3d]
+            class={`relative w-full h-full transition-transform duration-500 transform-3d
             ${gameState === "guessing" ? "rotate-y-180" : ""}`}
           >
             <!-- Front -->

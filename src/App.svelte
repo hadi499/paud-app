@@ -1,11 +1,17 @@
 <script>
   import { Router, Route, links } from "svelte-routing";
   import Home from "./lib/Home.svelte";
-  import MemoryGame from "./lib/MemoryGame.svelte";
+
   import CountingGame from "./lib/CountingGame.svelte";
-  import OddOneOut from "./lib/OddOneOut.svelte";
+
   import CountingGameMedium from "./lib/CountingGameMedium.svelte";
   import CountingGameHard from "./lib/CountingGameHard.svelte";
+
+  import FourImageDoraemon from "./lib/FourImageDoraemon.svelte";
+  import FourImageTayo from "./lib/FourImageTayo.svelte";
+  import SixImageDoraemon from "./lib/SixImageDoraemon.svelte";
+  import SixImageTayo from "./lib/SixImageTayo.svelte";
+  import FourImageFruit from "./lib/FourImageFruit.svelte";
 
   export let url = "";
 </script>
@@ -15,10 +21,6 @@
     <main>
       <Route path="/">
         <Home />
-      </Route>
-
-      <Route path="/memory-game">
-        <MemoryGame />
       </Route>
 
       <Route path="/counting-game">
@@ -32,8 +34,21 @@
         <CountingGameHard />
       </Route>
 
-      <Route path="/odd-one-out">
-        <OddOneOut />
+      <Route path="/four-image-doraemon">
+        <FourImageDoraemon />
+      </Route>
+      <Route path="/four-image-tayo">
+        <FourImageTayo />
+      </Route>
+      <Route path="/four-image-fruit">
+        <FourImageFruit />
+      </Route>
+
+      <Route path="/six-image-doraemon">
+        <SixImageDoraemon />
+      </Route>
+      <Route path="/six-image-tayo">
+        <SixImageTayo />
       </Route>
 
       <Route path="*">

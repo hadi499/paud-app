@@ -13,6 +13,8 @@
   import SixImageTayo from "./lib/SixImageTayo.svelte";
   import FourImageFruit from "./lib/FourImageFruit.svelte";
   import SixImageFruit from "./lib/SixImageFruit.svelte";
+  import SculteGame from "./lib/SculteGame.svelte";
+  import SculteGamePrime from "./lib/SculteGamePrime.svelte";
 
   export let url = "";
 </script>
@@ -53,6 +55,12 @@
       </Route>
       <Route path="/six-image-fruit">
         <SixImageFruit />
+      </Route>
+      <Route path="/sculte-game">
+        <SculteGame />
+      </Route>
+      <Route path="/sculte-game-prime">
+        <SculteGamePrime />
       </Route>
 
       <Route path="*">

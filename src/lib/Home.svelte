@@ -6,13 +6,13 @@
   <main class="max-w-3xl mx-auto px-6 space-y-8 mt-8 mb-16">
     <div class="flex flex-col gap-3 justify-center items-center mb-8 px-2">
       <h1
-        class="text-4xl font-bold tracking-wider text-slate-600 py-3 px-5 shadow-md rounded-md bg-blue-50 border-blue-300"
+        class="text-2xl md:text-4xl font-bold tracking-wider text-slate-600 py-3 px-5 shadow-md rounded-md bg-blue-50 border-blue-300"
         style="font-family: 'Caveat Brush', sans-serif;"
       >
         Game Kognitif Anak
       </h1>
       <h2
-        class="text-4xl font-semibold text-indigo-600 tracking-wide mb-2"
+        class="text-3xl md:text-4xl font-semibold text-indigo-600 tracking-wide mb-2"
         style="font-family: 'Tangerine', sans-serif;"
       >
         Les Balonggarut
@@ -31,9 +31,9 @@
           class="flex-col p-3 flex gap-3 items-center  bg-white rounded-2xl border border-slate-200 hover:border-pink-300 hover:shadow-md transition-all group"
         >
           <div
-            class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition-transform"
+            class="w-14 h-14 bg-sky-100 rounded-full flex items-center justify-center text-2xl mb-1 group-hover:scale-110 transition-transform"
           >
-            🧸
+            <img src="/images/angka.png" alt="" class="h-12 w-12" />
           </div>
           <h4 class="font-bold text-lg text-slate-900 text-center">
             Hitung Benda Level 1
@@ -45,9 +45,9 @@
           class="flex flex-col items-center p-3 gap-3 bg-white rounded-2xl border border-slate-200 hover:border-pink-300 hover:shadow-md transition-all group"
         >
           <div
-            class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition-transform"
+            class="w-14 h-14 bg-sky-100 rounded-full flex items-center justify-center text-2xl mb-1 group-hover:scale-110 transition-transform"
           >
-            🧸
+            <img src="/images/angka.png" alt="" class="h-12 w-12" />
           </div>
           <h4 class="font-bold text-lg text-slate-900 text-center">
             Hitung Benda Level 2
@@ -59,9 +59,9 @@
           class="flex-col p-3 flex gap-3 items-center bg-white rounded-2xl border border-slate-200 hover:border-pink-300 hover:shadow-md transition-all group"
         >
           <div
-            class="w-12 h-12 bg-red-200 rounded-full flex items-center justify-center text-2xl mb-3 group-hover:scale-110 transition-transform"
+            class="w-14 h-14 bg-sky-100 rounded-full flex items-center justify-center text-2xl mb-1 group-hover:scale-110 transition-transform"
           >
-            🧸
+            <img src="/images/angka.png" alt="" class="h-12 w-12" />
           </div>
           <h4 class="font-bold text-lg text-slate-900 mb-1 text-center">
             Hitung Benda Level 3
@@ -75,7 +75,7 @@
         class="text-2xl font-bold mb-6 tracking-wide"
         style="font-family: 'Caveat Brush', sans-serif;"
       >
-        Game Tebak 4 Gambar
+        Game 4 Gambar
       </h1>
       <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
         <Link
@@ -121,7 +121,7 @@
         class="text-2xl font-bold mb-6 tracking-wide"
         style="font-family: 'Caveat Brush', sans-serif;"
       >
-        Game Tebak 6 Gambar
+        Game 6 Gambar
       </h1>
       <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
         <Link
@@ -159,6 +159,41 @@
           </div>
           <h4 class="font-bold text-lg text-slate-900 mb-1">Buah</h4>
           <p class="text-sm text-center">PAUD / TK</p>
+        </Link>
+      </div>
+    </section>
+
+    <section>
+      <h1
+        class="text-2xl font-bold mb-6 tracking-wide"
+        style="font-family: 'Caveat Brush', sans-serif;"
+      >
+        Sculte Game
+      </h1>
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <Link
+          to="/sculte-game"
+          class="flex-col p-3 flex gap-3 items-center bg-white rounded-2xl border border-slate-200 hover:border-green-300 hover:shadow-md transition-all group"
+        >
+          <div
+            class="w-14 h-14 bg-sky-100 rounded-full flex items-center justify-center text-2xl mb-1 group-hover:scale-110 transition-transform"
+          >
+            🧠
+          </div>
+          <h4 class="font-bold text-lg text-slate-900 mb-1">1 - 25</h4>
+          <p class="text-sm text-center">SD</p>
+        </Link>
+        <Link
+          to="/sculte-game-prime"
+          class="flex-col p-3 flex gap-3 items-center bg-white rounded-2xl border border-slate-200 hover:border-green-300 hover:shadow-md transition-all group"
+        >
+          <div
+            class="w-14 h-14 bg-sky-100 rounded-full flex items-center justify-center text-2xl mb-1 group-hover:scale-110 transition-transform"
+          >
+            🧠
+          </div>
+          <h4 class="font-bold text-lg text-slate-900 mb-1">Bilangan Prima</h4>
+          <p class="text-sm text-center">SD</p>
         </Link>
       </div>
     </section>

@@ -19,7 +19,12 @@
       </h2>
     </div>
     <section>
-      <h1 class="text-2xl font-bold mb-6">Berhitung</h1>
+      <h1
+        class="text-2xl font-bold mb-6 tracking-wide"
+        style="font-family: 'Caveat Brush', sans-serif;"
+      >
+        Berhitung
+      </h1>
       <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
         <Link
           to="/counting-game"
@@ -66,7 +71,12 @@
       </div>
     </section>
     <section>
-      <h1 class="text-2xl font-bold mb-4">Game Tebak 4 Gambar</h1>
+      <h1
+        class="text-2xl font-bold mb-6 tracking-wide"
+        style="font-family: 'Caveat Brush', sans-serif;"
+      >
+        Game Tebak 4 Gambar
+      </h1>
       <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
         <Link
           to="/four-image-doraemon"
@@ -107,7 +117,12 @@
       </div>
     </section>
     <section>
-      <h1 class="text-2xl font-bold mb-4">Game Tebak 6 Gambar</h1>
+      <h1
+        class="text-2xl font-bold mb-6 tracking-wide"
+        style="font-family: 'Caveat Brush', sans-serif;"
+      >
+        Game Tebak 6 Gambar
+      </h1>
       <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
         <Link
           to="/six-image-doraemon"

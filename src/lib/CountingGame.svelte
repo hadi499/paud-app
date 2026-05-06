@@ -4,6 +4,11 @@
 
   const EMOJIS = ["🍎", "🐶", "🎈", "🚗", "🧸", "🐱", "🍓", "🦋", "⭐", "⚽"];
 
+  // Inisialisasi Audio
+  // Ganti URL ini dengan file suara yang kamu punya
+  const soundSuccess = new Audio("/sounds/benar.mp3"); // Suara bintang/ding
+  const soundError = new Audio("/sounds/wrong.mp3"); // Suara buzz/salah
+
   let currentCount = $state(0);
   let currentEmoji = $state("");
   let options = $state([]);
@@ -25,30 +30,25 @@
       isGameOver = true;
       return;
     }
-
-    // Pilih jumlah acak 1-10
     currentCount = Math.floor(Math.random() * 10) + 1;
-
-    // Pilih emoji acak
     currentEmoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
 
-    // Buat opsi jawaban (3 tombol)
     let ops = new Set([currentCount]);
     while (ops.size < 3) {
-      // Pilih angka acak 1-10
       let wrongAns = Math.floor(Math.random() * 10) + 1;
       ops.add(wrongAns);
     }
-
-    // Konversi set ke array dan acak urutannya
     options = Array.from(ops).sort(() => Math.random() - 0.5);
   }
 
   function handleAnswer(selected) {
-    if (showSuccess) return; // Jangan izinkan klik saat animasi sukses
+    if (showSuccess) return;
 
     if (selected === currentCount) {
-      // Benar
+      // EFEK SUARA BERHASIL (Bintang Muncul)
+      soundSuccess.currentTime = 0; // Reset durasi agar bisa spam klik
+      soundSuccess.play().catch((e) => console.log("Audio play blocked"));
+
       score++;
       showSuccess = true;
 
@@ -56,9 +56,12 @@
         showSuccess = false;
         questionNumber++;
         nextQuestion();
-      }, 1000); // Tunggu 1 detik untuk menunjukkan animasi berhasil
+      }, 1000);
     } else {
-      // Salah
+      // EFEK SUARA SALAH
+      soundError.currentTime = 0;
+      soundError.play().catch((e) => console.log("Audio play blocked"));
+
       errorShake = true;
       setTimeout(() => {
         errorShake = false;

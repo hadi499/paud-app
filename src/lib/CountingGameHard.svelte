@@ -4,6 +4,11 @@
 
   const EMOJIS = ["🍎", "🐶", "🎈", "🚗", "🧸", "🐱", "🍓", "🦋", "⭐", "⚽"];
 
+  // 1. TAMBAHKAN BINDING AUDIO
+  let audioCorrect = $state();
+  let audioWrong = $state();
+  let audioApplause = $state();
+
   let currentCount = $state(0);
   let currentEmoji = $state("");
   let options = $state([]);
@@ -14,7 +19,27 @@
   let showError = $state(false);
   let errorShake = $state(false);
 
+  // 2. FUNGSI PEMUTAR SUARA
+  function playSound(audioElement) {
+    if (audioElement) {
+      audioElement.pause();
+      audioElement.currentTime = 0;
+      let playPromise = audioElement.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((error) => {
+          console.log("Audio diblokir browser:", error);
+        });
+      }
+    }
+  }
+
   function startGame() {
+    // 3. MATIKAN SUARA TEPUK TANGAN SAAT RESTART
+    if (audioApplause) {
+      audioApplause.pause();
+      audioApplause.currentTime = 0;
+    }
+
     score = 0;
     questionNumber = 1;
     isGameOver = false;
@@ -42,20 +67,42 @@
   function handleAnswer(selected) {
     if (showSuccess || showError) return;
 
+    // 4. DETEKSI SOAL TERAKHIR
+    const isLastQuestion = questionNumber >= 10;
+
     if (selected === currentCount) {
       score++;
       showSuccess = true;
+
+      // 5. MAINKAN SUARA BENAR / TEPUK TANGAN
+      if (isLastQuestion) {
+        playSound(audioApplause);
+      } else {
+        playSound(audioCorrect);
+      }
     } else {
       showError = true;
       errorShake = true;
+
+      // 6. MAINKAN SUARA SALAH / TEPUK TANGAN
+      if (isLastQuestion) {
+        playSound(audioApplause);
+      } else {
+        playSound(audioWrong);
+      }
     }
 
     setTimeout(() => {
       showSuccess = false;
       showError = false;
       errorShake = false;
-      questionNumber++;
-      nextQuestion();
+
+      if (isLastQuestion) {
+        isGameOver = true;
+      } else {
+        questionNumber++;
+        nextQuestion();
+      }
     }, 1000);
   }
 
@@ -114,7 +161,7 @@
         Berapa jumlahnya?
       </h2>
 
-      <!-- Area Gambar (Di Sini Penambahannya) -->
+      <!-- Area Gambar -->
       <div
         class="flex flex-wrap justify-center gap-1.5 mb-6 min-h-40 items-center"
       >
@@ -124,7 +171,6 @@
           <div class="text-7xl animate-shake select-none">😢</div>
         {:else}
           {#each Array(currentCount) as _}
-            <!-- Tambahkan: cursor-pointer, hover:scale-110 (agar sedikit membesar saat disorot), dan transition-transform -->
             <div
               class="text-4xl animate-pop-in cursor-pointer hover:scale-110 transition-transform select-none"
             >
@@ -208,6 +254,12 @@
     {/if}
   </div>
 </div>
+
+<!-- 7. ELEMEN AUDIO DARI FOLDER LOKAL -->
+<audio bind:this={audioCorrect} src="/sounds/benar.mp3" preload="auto"></audio>
+<audio bind:this={audioWrong} src="/sounds/wrong.mp3" preload="auto"></audio>
+<audio bind:this={audioApplause} src="/sounds/tepuk-tangan.mp3" preload="auto"
+></audio>
 
 <style>
   @keyframes popIn {

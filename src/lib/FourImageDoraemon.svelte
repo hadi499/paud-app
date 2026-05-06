@@ -6,7 +6,11 @@
   let targetCard = $state(null);
   let cards = $state([]);
   let selectedTime = $state(10);
-  let isCorrect = $state(null); // State baru untuk melacak benar/salah
+  let isCorrect = $state(null);
+
+  // 1. TAMBAHKAN BINDING AUDIO
+  let audioCorrect = $state();
+  let audioWrong = $state();
 
   const images = [
     "/images/doraemon/d1.png",
@@ -14,6 +18,20 @@
     "/images/doraemon/d3.png",
     "/images/doraemon/d4.png",
   ];
+
+  // 2. FUNGSI PEMUTAR SUARA YANG AMAN
+  function playSound(audioElement) {
+    if (audioElement) {
+      audioElement.pause();
+      audioElement.currentTime = 0;
+      let playPromise = audioElement.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((error) => {
+          console.log("Audio diblokir browser:", error);
+        });
+      }
+    }
+  }
 
   function startGame() {
     let shuffled = [...images];
@@ -32,7 +50,7 @@
     gameState = "memorize";
     countdown = selectedTime;
     message = "Hafalkan posisi gambar-gambar ini!";
-    isCorrect = null; // Reset status saat mulai ulang
+    isCorrect = null;
   }
 
   $effect(() => {
@@ -50,10 +68,12 @@
 
     if (card.id === targetCard.id) {
       message = `Benar sekali, gambar itu ada di nomor ${card.number}.`;
-      isCorrect = true; // Tandai benar
+      isCorrect = true;
+      playSound(audioCorrect); // 3. MAINKAN SUARA BENAR
     } else {
       message = `Salah, Gambar yang benar ada di nomor ${targetCard.number}.`;
-      isCorrect = false; // Tandai salah
+      isCorrect = false;
+      playSound(audioWrong); // 4. MAINKAN SUARA SALAH
     }
     gameState = "result";
   }
@@ -82,7 +102,7 @@
     class="bg-gray-50 rounded-2xl shadow-lg text-center select-none p-4 sm:p-6 border border-slate-200"
   >
     <h1 class="text-xl sm:text-2xl font-bold">Game 4 Gambar</h1>
-    <h2 class="text-base sm:text-lg text-blue-700 font-semibold">Doraemon</h2>
+    <h2 class="text-base sm:text-lg text-orange-600 font-semibold">Doraemon</h2>
 
     <div class="min-h-[220px] flex flex-col items-center justify-center">
       {#if gameState === "start"}
@@ -129,7 +149,6 @@
           </span>
         </p>
       {:else}
-        <!-- Logika warna diubah di baris ini -->
         <p
           class={`text-base sm:text-lg font-bold mb-2 ${
             gameState === "result"
@@ -201,6 +220,10 @@
     {/if}
   </div>
 </div>
+
+<!-- 5. ELEMEN AUDIO DARI FOLDER LOKAL -->
+<audio bind:this={audioCorrect} src="/sounds/benar.mp3" preload="auto"></audio>
+<audio bind:this={audioWrong} src="/sounds/wrong.mp3" preload="auto"></audio>
 
 <style>
   /* Tambahan kecil karena Tailwind belum support full 3D */

@@ -4,6 +4,11 @@
 
   const EMOJIS = ["🍎", "🐶", "🎈", "🚗", "🧸", "🐱", "🍓", "🦋", "⭐", "⚽"];
 
+  // Binding untuk tag audio HTML
+  let audioCorrect = $state();
+  let audioWrong = $state();
+  let audioApplause = $state();
+
   let currentCount = $state(0);
   let currentEmoji = $state("");
   let options = $state([]);
@@ -14,7 +19,27 @@
   let showError = $state(false);
   let errorShake = $state(false);
 
+  // Fungsi khusus pemutar suara agar aman dari blokir browser
+  function playSound(audioElement) {
+    if (audioElement) {
+      audioElement.pause();
+      audioElement.currentTime = 0;
+      let playPromise = audioElement.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((error) => {
+          console.log("Audio diblokir browser:", error);
+        });
+      }
+    }
+  }
+
   function startGame() {
+    // Matikan tepuk tangan jika tombol Main Lagi ditekan
+    if (audioApplause) {
+      audioApplause.pause();
+      audioApplause.currentTime = 0;
+    }
+
     score = 0;
     questionNumber = 1;
     isGameOver = false;
@@ -22,11 +47,6 @@
   }
 
   function nextQuestion() {
-    if (questionNumber > 10) {
-      isGameOver = true;
-      return;
-    }
-
     currentCount = Math.floor(Math.random() * 10) + 1;
     currentEmoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
 
@@ -42,20 +62,43 @@
   function handleAnswer(selected) {
     if (showSuccess || showError) return;
 
+    // Deteksi apakah ini pertanyaan terakhir (ke-10)
+    const isLastQuestion = questionNumber >= 10;
+
     if (selected === currentCount) {
       score++;
       showSuccess = true;
+
+      // Mainkan suara berdasarkan kondisi
+      if (isLastQuestion) {
+        playSound(audioApplause);
+      } else {
+        playSound(audioCorrect);
+      }
     } else {
       showError = true;
       errorShake = true;
+
+      // Mainkan suara berdasarkan kondisi
+      if (isLastQuestion) {
+        playSound(audioApplause);
+      } else {
+        playSound(audioWrong);
+      }
     }
 
+    // Jeda sebelum pindah soal atau menampilkan skor
     setTimeout(() => {
       showSuccess = false;
       showError = false;
       errorShake = false;
-      questionNumber++;
-      nextQuestion();
+
+      if (isLastQuestion) {
+        isGameOver = true;
+      } else {
+        questionNumber++;
+        nextQuestion();
+      }
     }, 1000);
   }
 
@@ -117,7 +160,7 @@
 
       <!-- Area Gambar -->
       <div
-        class="flex flex-wrap justify-center gap-2 mb-6 min-h-30 items-center"
+        class="flex flex-wrap justify-center gap-2 mb-6 min-h-[120px] items-center"
       >
         {#if showSuccess}
           <div class="text-7xl animate-bounce select-none">🌟</div>
@@ -160,7 +203,6 @@
         <div
           class="bg-white p-8 rounded-4xl shadow-2xl max-w-sm w-full text-center border-4 border-pink-200 transform transition-all scale-100 animate-pop"
         >
-          <!-- LOGIKA KONDISIONAL UNTUK PIALA DAN HOREEE -->
           {#if score === 10}
             <div class="text-7xl mb-2 animate-bounce">🏆</div>
             <h2 class="text-4xl font-black text-pink-500 mb-4 tracking-wider">
@@ -177,14 +219,13 @@
             </p>
           {/if}
 
-          <!-- TAMPILAN SKOR YANG DIPERBESAR -->
+          <!-- TAMPILAN SKOR -->
           <div
             class="bg-pink-50 rounded-2xl py-6 mb-8 border-2 border-pink-100"
           >
             <p class="text-slate-500 font-bold text-lg mb-1">
               Skor Akhir Kamu:
             </p>
-            <!-- Menggunakan Arbitrary Value [100px] agar pasti besar -->
             <div
               class="text-pink-600 text-[100px] font-black drop-shadow-md flex items-baseline justify-center gap-1 leading-none py-2"
             >
@@ -212,8 +253,14 @@
   </div>
 </div>
 
+<!-- ELEMEN AUDIO -->
+<!-- ELEMEN AUDIO DARI FOLDER LOKAL -->
+<audio bind:this={audioCorrect} src="/sounds/benar.mp3" preload="auto"></audio>
+<audio bind:this={audioWrong} src="/sounds/wrong.mp3" preload="auto"></audio>
+<audio bind:this={audioApplause} src="/sounds/tepuk-tangan.mp3" preload="auto"
+></audio>
+
 <style>
-  /* ... (Style tetap sama) ... */
   @keyframes popIn {
     0% {
       transform: scale(0);
@@ -231,7 +278,6 @@
   .animate-pop-in {
     animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) backwards;
   }
-
   @keyframes shake {
     0%,
     100% {
@@ -250,7 +296,6 @@
   .animate-shake {
     animation: shake 0.3s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   }
-
   @keyframes blob {
     0% {
       transform: translate(0px, 0px) scale(1);
@@ -271,7 +316,6 @@
   .animation-delay-2000 {
     animation-delay: 2s;
   }
-
   @keyframes fadeIn {
     from {
       opacity: 0;

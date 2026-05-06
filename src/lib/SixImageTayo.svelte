@@ -8,6 +8,10 @@
   let selectedTime = $state(10);
   let isCorrect = $state(null); // State baru untuk melacak benar/salah
 
+  // 1. TAMBAHKAN BINDING AUDIO
+  let audioCorrect = $state();
+  let audioWrong = $state();
+
   const images = [
     "/images/tayo/t1.png",
     "/images/tayo/t2.png",
@@ -16,6 +20,20 @@
     "/images/tayo/t5.png",
     "/images/tayo/t6.png",
   ];
+
+  // 2. FUNGSI PEMUTAR SUARA YANG AMAN
+  function playSound(audioElement) {
+    if (audioElement) {
+      audioElement.pause();
+      audioElement.currentTime = 0;
+      let playPromise = audioElement.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((error) => {
+          console.log("Audio diblokir browser:", error);
+        });
+      }
+    }
+  }
 
   function startGame() {
     let shuffled = [...images];
@@ -53,9 +71,11 @@
     if (card.id === targetCard.id) {
       message = `Benar sekali, gambar itu ada di nomor ${card.number}.`;
       isCorrect = true; // Tandai benar
+      playSound(audioCorrect); // 3. MAINKAN SUARA BENAR
     } else {
       message = `Salah, Gambar yang benar ada di nomor ${targetCard.number}.`;
       isCorrect = false; // Tandai salah
+      playSound(audioWrong); // 4. MAINKAN SUARA SALAH
     }
     gameState = "result";
   }
@@ -84,7 +104,7 @@
     class="bg-gray-50 rounded-2xl shadow-lg text-center select-none p-4 sm:p-6 border border-slate-200"
   >
     <h1 class="text-xl sm:text-2xl font-bold">Game 6 Gambar</h1>
-    <h2 class="text-base sm:text-lg text-blue-700 font-semibold">Tayo</h2>
+    <h2 class="text-base sm:text-lg text-orange-700 font-semibold">Tayo</h2>
 
     <div class="min-h-[220px] flex flex-col items-center justify-center">
       {#if gameState === "start"}
@@ -205,6 +225,9 @@
     {/if}
   </div>
 </div>
+<!-- 5. ELEMEN AUDIO DARI FOLDER LOKAL -->
+<audio bind:this={audioCorrect} src="/sounds/benar.mp3" preload="auto"></audio>
+<audio bind:this={audioWrong} src="/sounds/wrong.mp3" preload="auto"></audio>
 
 <style>
   /* Tambahan kecil karena Tailwind belum support full 3D */

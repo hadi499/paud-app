@@ -8,6 +8,9 @@
     73, 79, 83, 89, 97,
   ];
 
+  // 1. TAMBAHKAN BINDING UNTUK BGM
+  let bgmAudio = $state();
+
   let grid = $state([]);
   let currentIndex = $state(0); // Melacak urutan indeks (0-24)
   let currentTarget = $state(primes[0]); // Angka prima yang sedang dicari
@@ -31,6 +34,11 @@
     timerInterval = setInterval(() => {
       time++;
     }, 1000);
+    // 2. MAINKAN BGM SAAT GAME DIMULAI
+    if (bgmAudio) {
+      bgmAudio.currentTime = 0; // Reset lagu dari awal
+      bgmAudio.play().catch((e) => console.log("BGM diblokir browser:", e));
+    }
   }
 
   function handleCellClick(number, index) {
@@ -44,6 +52,9 @@
         clearInterval(timerInterval);
         isGameOver = true;
         isPlaying = false;
+        if (bgmAudio) {
+          bgmAudio.pause();
+        }
       } else {
         // Lanjut ke bilangan prima berikutnya
         currentTarget = primes[currentIndex];
@@ -71,6 +82,9 @@
 
   onDestroy(() => {
     if (timerInterval) clearInterval(timerInterval);
+    if (bgmAudio) {
+      bgmAudio.pause();
+    }
   });
 </script>
 
@@ -221,6 +235,8 @@
     {/if}
   </div>
 </div>
+<!-- 5. ELEMEN AUDIO UNTUK BGM (Tambahkan atribut "loop" agar musik diulang terus) -->
+<audio bind:this={bgmAudio} src="/sounds/bgm2.mp3" loop preload="auto"></audio>
 
 <style>
   @keyframes shake {

@@ -8,10 +8,12 @@
   let isPlaying = $state(false);
   let isGameOver = $state(false);
   let timerInterval;
-  let wrongShake = $state(-1); // Index kotak yang salah ditekan
+  let wrongShake = $state(-1);
+
+  // 1. TAMBAHKAN BINDING UNTUK BGM
+  let bgmAudio = $state();
 
   function startGame() {
-    // Buat array 1-25 dan acak
     const numbers = Array.from({ length: 25 }, (_, i) => i + 1);
     grid = numbers.sort(() => Math.random() - 0.5);
 
@@ -24,6 +26,12 @@
     timerInterval = setInterval(() => {
       time++;
     }, 1000);
+
+    // 2. MAINKAN BGM SAAT GAME DIMULAI
+    if (bgmAudio) {
+      bgmAudio.currentTime = 0; // Reset lagu dari awal
+      bgmAudio.play().catch((e) => console.log("BGM diblokir browser:", e));
+    }
   }
 
   function handleCellClick(number, index) {
@@ -33,10 +41,14 @@
       // Benar
       currentTarget++;
       if (currentTarget > 25) {
-        // Selesai
+        // 3. GAME SELESAI -> MATIKAN BGM
         clearInterval(timerInterval);
         isGameOver = true;
         isPlaying = false;
+
+        if (bgmAudio) {
+          bgmAudio.pause();
+        }
       }
     } else {
       // Salah
@@ -56,11 +68,18 @@
   };
 
   onMount(() => {
+    // Kita berikan sedikit delay sebelum game mulai otomatis
+    // Namun ingat, beberapa browser mungkin menahan BGM autoplay
+    // sampai pemain melakukan klik pertama di layar.
     setTimeout(startGame, 300);
   });
 
   onDestroy(() => {
     if (timerInterval) clearInterval(timerInterval);
+    // 4. MATIKAN BGM JIKA PEMAIN PINDAH HALAMAN SEBELUM GAME SELESAI
+    if (bgmAudio) {
+      bgmAudio.pause();
+    }
   });
 </script>
 
@@ -210,6 +229,9 @@
   </div>
 </div>
 
+<!-- 5. ELEMEN AUDIO UNTUK BGM (Tambahkan atribut "loop" agar musik diulang terus) -->
+<audio bind:this={bgmAudio} src="/sounds/bgm2.mp3" loop preload="auto"></audio>
+
 <style>
   @keyframes shake {
     0%,
@@ -229,7 +251,6 @@
   .animate-shake {
     animation: shake 0.3s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   }
-
   @keyframes fadeIn {
     from {
       opacity: 0;

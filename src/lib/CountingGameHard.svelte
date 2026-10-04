@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import { Link } from "svelte-routing";
 
-  const EMOJIS = ["🍎", "🐶", "🎈", "🚗", "🧸", "🐱", "🍓", "🦋", "⭐", "⚽"];
+  const EMOJIS = ["🍎", "🐶", "🚗", "🧸", "🐱", "🍓", "🦋", "⚽", "🍩", "🧃"];
 
   // 1. TAMBAHKAN BINDING AUDIO
   let audioCorrect = $state();
@@ -18,6 +18,7 @@
   let showSuccess = $state(false);
   let showError = $state(false);
   let errorShake = $state(false);
+  let questionSequence = $state([]);
 
   // 2. FUNGSI PEMUTAR SUARA
   function playSound(audioElement) {
@@ -43,6 +44,9 @@
     score = 0;
     questionNumber = 1;
     isGameOver = false;
+    questionSequence = Array.from({ length: 10 }, (_, i) => i + 11).sort(
+      () => Math.random() - 0.5,
+    );
     nextQuestion();
   }
 
@@ -52,7 +56,7 @@
       return;
     }
 
-    currentCount = Math.floor(Math.random() * 10) + 11;
+    currentCount = questionSequence[questionNumber - 1];
     currentEmoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
 
     let ops = new Set([currentCount]);
@@ -163,16 +167,24 @@
 
       <!-- Area Gambar -->
       <div
-        class="flex flex-wrap justify-center gap-1.5 mb-6 min-h-40 items-center"
+        class="flex flex-wrap justify-center mx-auto gap-x-1 gap-y-5 sm:gap-x-2 sm:gap-y-5 mb-6 min-h-[200px] sm:min-h-[280px] items-center w-full"
       >
         {#if showSuccess}
-          <div class="text-7xl animate-bounce select-none">🌟</div>
+          <div
+            class="text-7xl sm:text-8xl animate-bounce select-none flex justify-center w-full"
+          >
+            🌟
+          </div>
         {:else if showError}
-          <div class="text-7xl animate-shake select-none">😢</div>
+          <div
+            class="text-7xl sm:text-8xl animate-shake select-none flex justify-center w-full"
+          >
+            😢
+          </div>
         {:else}
           {#each Array(currentCount) as _}
             <div
-              class="text-4xl animate-pop-in cursor-pointer hover:scale-110 transition-transform select-none"
+              class="w-[18%] flex justify-center text-5xl sm:text-6xl animate-pop-in cursor-pointer hover:scale-110 transition-transform select-none"
             >
               {currentEmoji}
             </div>

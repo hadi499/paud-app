@@ -18,6 +18,7 @@
   let showSuccess = $state(false);
   let showError = $state(false);
   let errorShake = $state(false);
+  let questionSequence = $state([]);
 
   // Fungsi khusus pemutar suara agar aman dari blokir browser
   function playSound(audioElement) {
@@ -43,11 +44,12 @@
     score = 0;
     questionNumber = 1;
     isGameOver = false;
+    questionSequence = Array.from({ length: 10 }, (_, i) => i + 1).sort(() => Math.random() - 0.5);
     nextQuestion();
   }
 
   function nextQuestion() {
-    currentCount = Math.floor(Math.random() * 10) + 1;
+    currentCount = questionSequence[questionNumber - 1];
     currentEmoji = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
 
     let ops = new Set([currentCount]);
@@ -160,16 +162,16 @@
 
       <!-- Area Gambar -->
       <div
-        class="flex flex-wrap justify-center gap-2 mb-6 min-h-[120px] items-center"
+        class="flex flex-wrap justify-center gap-2 sm:gap-4 mb-6 min-h-[140px] sm:min-h-[200px] items-center"
       >
         {#if showSuccess}
-          <div class="text-7xl animate-bounce select-none">🌟</div>
+          <div class="text-7xl sm:text-8xl animate-bounce select-none">🌟</div>
         {:else if showError}
-          <div class="text-7xl animate-shake select-none">😢</div>
+          <div class="text-7xl sm:text-8xl animate-shake select-none">😢</div>
         {:else}
           {#each Array(currentCount) as _}
             <div
-              class="text-4xl animate-pop-in cursor-pointer hover:scale-110 transition-transform select-none"
+              class="text-5xl sm:text-6xl animate-pop-in cursor-pointer hover:scale-110 transition-transform select-none"
             >
               {currentEmoji}
             </div>
